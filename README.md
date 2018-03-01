@@ -6,3 +6,5 @@
 
 ### 2. Photometric Stereo
 
+### 3. Scale-space blob detection
+
