@@ -4,7 +4,7 @@
 - Part1: Coloring Prokudin-Gorskii images
 - Part2: Color image demosaicing
 
-### 2. Photometric Stereo
+#### 2. Photometric Stereo
 
-### 3. Scale-space blob detection
+#### 3. Scale-space blob detection
 
