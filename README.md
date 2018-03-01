@@ -8,3 +8,8 @@
 
 ### 3. Scale-space blob detection
 
+#### 4. Image stitching
+
+- Part1: Stitching pairs of images
+- Part2: Stitching multiple images
+- Extra Credit: Recognizing panoramas
