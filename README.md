@@ -3,3 +3,6 @@
 #### 1. Color image
 - Part1: Coloring Prokudin-Gorskii images
 - Part2: Color image demosaicing
+
+### 2. Photometric Stereo
+
