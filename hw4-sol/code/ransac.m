@@ -34,7 +34,8 @@ switch method
 
             if length(inliers_new) > length(inliers)
                 inliers = inliers_new;
-                transf = cat(2, inv(M), -inv(M) * T);
+%                 transf = cat(2, inv(M), -inv(M) * T);
+                transf = [M T; 0 0 1];
             end
         end
 
@@ -84,7 +85,8 @@ switch method
 
             if length(inliers_new) > length(inliers)
                 inliers = inliers_new;
-                transf = inv(H);
+%                 transf = inv(H);
+                transf = H;
                 sample = [match_group1(:, selected_points);match_group2(:, selected_points)];
             end
         end

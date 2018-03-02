@@ -1,11 +1,17 @@
-function im = combine_images(im1_rgb, im2_rgb, H)
+function im = combine_images(im1_rgb, im2_rgb, H, method)
 
 im1 = im2double(im1_rgb);
 im2 = im2double(im2_rgb);
 
 [h2, w2, ~] = size(im2);
 
-T = maketform('projective', H');
+switch method
+    case 'affine'
+        T = maketform('affine', H');
+    case 'homography'
+        T = maketform('projective', H');
+end
+
 [im1t, X, Y] = imtransform(im1, T, 'nearest');
 [h1t, w1t, ~] = size(im1t);
 
