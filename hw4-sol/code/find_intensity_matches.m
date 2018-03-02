@@ -24,21 +24,31 @@ function [match_group1, match_group2] = find_intensity_matches(im1, im2, row1, c
         end
     end
     
-    corr = zeros(size(feat1, 1), size(feat2, 1));
-    for i = 1:size(corr, 1)
-        for j = 1:size(corr, 2)
-            u = feat1(i, :)';
-            v = feat2(j, :)';
-            ubar = mean(u) * ones(length(u), 1);
-            vbar = mean(v) * ones(length(v), 1);
-            corr(i,j) = sum((u-ubar).*(v-vbar)) / ( sqrt(sum((u-ubar).^2)) * sqrt(sum((v-vbar).^2)) );
-        end
-    end
+%     corr = zeros(size(feat1, 1), size(feat2, 1));
+%     for i = 1:size(corr, 1)
+%         for j = 1:size(corr, 2)
+%             u = feat1(i, :)';
+%             v = feat2(j, :)';
+%             ubar = mean(u) * ones(length(u), 1);
+%             vbar = mean(v) * ones(length(v), 1);
+%             corr(i,j) = sum((u-ubar).*(v-vbar)) / ( sqrt(sum((u-ubar).^2)) * sqrt(sum((v-vbar).^2)) );
+%         end
+%     end
+
+    feat1_diff = feat1 - mean(feat1, 2);
+    feat1_norm = sqrt(sum(feat1_diff.^2, 2));
+    feat1_new = feat1_diff ./ feat1_norm;
+ 
+    feat2_diff = feat2 - mean(feat2, 2);
+    feat2_norm = sqrt(sum(feat2_diff.^2, 2));
+    feat2_new = feat2_diff ./ feat2_norm;   
+    
+    corr =  feat1_new * feat2_new';
     
     [d1, d2] = find(corr > thres);
 
     %-----Generate coordinates of matched pixels
-    for i=1:size(d1,1)
+    for i = 1:size(d1, 1)
         D1(:,i) = [col1(d1(i)); row1(d1(i));1];
         D2(:,i) = [col2(d2(i)); row2(d2(i));1];
     end

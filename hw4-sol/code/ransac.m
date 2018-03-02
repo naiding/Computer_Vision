@@ -40,6 +40,14 @@ switch method
 
     case 'homography'
         for iter = 1:num_iters
+            if num_match < 4
+                inliers = [];
+                inliers = [];
+                transf = [];
+                sample = [];
+                break;
+            end
+
             selected_points = randsample(num_match, 4);
 
             x = match_group1(1, selected_points);

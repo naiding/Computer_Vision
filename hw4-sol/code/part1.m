@@ -6,7 +6,7 @@ close all
 imageName1 = 'uttower_left.jpg';
 imageName2 = 'uttower_right.jpg';
 dataDir = fullfile('..','data');
-% 
+
 % imageName1 = '1.jpg';
 % imageName2 = '2.jpg';
 % dataDir = fullfile('..','data', 'test');

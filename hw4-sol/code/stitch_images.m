@@ -40,12 +40,24 @@ end
 num_iters = 1000; thres = 10;
 [inliers_group1, inliers_group2, transf, sample] = ransac(num_iters, thres, transf_method, match_group1, match_group2);
 
-num_match = size(inliers_group1, 2);
-stitchIm = merge_images(im1_rgb, im2_rgb, transf, transf_method);
+% save('H.mat', 'transf')
+% fprintf('saved !!!!')
 
-if disp
-%     show_matches(im1, im2, sample(1:2,:), sample(4:5,:));
-%     show_matches(im1, im2, inliers_group1, inliers_group2);
-    showMatchedFeatures(im1, im2, inliers_group1(1:2, :)', inliers_group2(1:2, :)' ,'montage');
-    figure; imshow(stitchIm);
+num_match = size(inliers_group1, 2);
+
+if num_match ~= 0
+    % stitchIm = merge_images(im1_rgb, im2_rgb, transf, transf_method);
+    stitchIm = combine_images(im1_rgb, im2_rgb, inv(transf));
+
+    if disp
+    %     show_matches(im1, im2, sample(1:2,:), sample(4:5,:));
+    %     show_matches(im1, im2, inliers_group1, inliers_group2);
+        showMatchedFeatures(im1, im2, inliers_group1(1:2, :)', inliers_group2(1:2, :)' ,'montage');
+        figure; imshow(stitchIm);
+    end
+else
+    stitchIm = [];
+    num_match = 0;
 end
+
+
