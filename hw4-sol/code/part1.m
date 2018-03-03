@@ -14,4 +14,5 @@ dataDir = fullfile('..','data');
 im1_rgb = imread(fullfile(dataDir, imageName1));
 im2_rgb = imread(fullfile(dataDir, imageName2));
 
-[stitched_im, num_match] = stitch_images(im1_rgb, im2_rgb, 'harris', 'sift', 'affine', 1);
+[stitched_im, num_match] = stitch_images(im1_rgb, im2_rgb, 'harris', 'sift', 'homography', 1);
+

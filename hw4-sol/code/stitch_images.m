@@ -37,7 +37,7 @@ switch descri_method
         match_group2 = [col2(match_idx(:, 2)), row2(match_idx(:, 2)), ones(size(match_idx, 1), 1)]';
 end
 
-num_iters = 1000; thres = 10;
+num_iters = 1000; thres = 15;
 [inliers_group1, inliers_group2, transf, sample] = ransac(num_iters, thres, transf_method, match_group1, match_group2);
 
 num_match = size(inliers_group1, 2);
