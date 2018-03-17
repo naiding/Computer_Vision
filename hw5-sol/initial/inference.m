@@ -9,10 +9,14 @@ activations = cell(num_layers,1);
 
 for i = 1:num_layers
     layer = model.layers(i);
+%     tic;
     [activations{i}, ~, ~] = layer.fwd_fn(input, layer.params, layer.hyper_params, false, []);
+%     fprintf("forward %s used time %f. \n", layer.type, toc);
     input = activations{i};
 %     fprintf(" ... %s layer output ... \n", layer.type);
 %     size(input)
 end
+
+% fprintf("------------------ \n");
 
 output = activations{end};

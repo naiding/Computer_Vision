@@ -1,4 +1,4 @@
-function [model, loss_history] = train(model, input, label, params, numIters)
+function [model, loss_history] = train(model, input, label, val_input, val_label, params, numIters)
 
 % Initialize training parameters
 % This code sets default values in case the parameters are not passed in.
@@ -36,10 +36,39 @@ end
 
 % update_params will be passed to your update_weights function.
 % This allows flexibility in case you want to implement extra features like momentum.
-update_params = struct('learning_rate',lr,'weight_decay',wd);
+
+method = 'nesterov'; % you can choose vanilla, momentum, nesterov, adam
+update_params = struct('learning_rate',lr,'weight_decay',wd,'method',method);
+
+for i = 1:numel(model.layers)
+    layer = model.layers(i);
+    
+    if strcmp(method, 'momentum') || strcmp(method, 'nesterov')
+        layer.params.vW = zeros(size(layer.params.W));
+        layer.params.vb = zeros(size(layer.params.b));
+    end
+    
+    if strcmp(method, 'adam')
+        layer.params.mW = zeros(size(layer.params.W));
+        layer.params.vW = zeros(size(layer.params.W));
+        layer.params.mb = zeros(size(layer.params.b));
+        layer.params.vb = zeros(size(layer.params.b));
+    end
+    
+    if strcmp(layer.type, 'dropout')
+        global dropoutMask; % for fn_dropout
+    end
+    
+    model.layers(i) = layer;
+end
 
 num_data = length(label);
 loss_history = [];
+acc_input = [];
+acc_val = [];
+
+
+
 fprintf("Begin training process ... \n");
 
 for i = 1:numIters
@@ -53,14 +82,26 @@ for i = 1:numIters
         [final_output, activations] = inference(model, X_batch);
         
         [loss, dv_input_loss] = loss_crossentropy(final_output, y_batch, [], true);
-        fprintf("Iter %d ... batch %d ... loss %f \n", i, j, loss);
+%         fprintf("Iter %d ... batch %d ... loss %f \n", i, j, loss);
         grad = calc_gradient(model, X_batch, activations, dv_input_loss);
         model = update_weights(model, grad, update_params);
     end
     
     [output, ~] = inference(model, input);
     [loss_overall, ~] = loss_crossentropy(output, label, [], false);
-    fprintf(" --- Iter %d ... overall loss %f. --- \n", loss_overall);
     
     loss_history = [loss_history; loss_overall];
+    
+    [~, acc1] = predict(model, input, label);
+    [~, acc2] = predict(model, val_input, val_label);
+    
+    acc_input = [acc_input; acc1];
+    acc_val = [acc_val; acc2];
+    
+    fprintf(" --- Iter %d ... overall loss %f ... train acc %f ... val acc %f. --- \n", i, loss_overall, acc1, acc2);
+
 end
+
+figure;
+plot(acc_input), hold on
+plot(acc_val), hold off

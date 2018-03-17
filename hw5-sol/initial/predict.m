@@ -1,8 +1,8 @@
-function [accuracy] = predict(model, data, label)
+function [prediction, accuracy] = predict(model, data, label)
 
 [final_output, ~] = inference(model, data);
-[~, pred] = max(final_output);
-accuracy = sum(pred==label') / length(label);
+[~, prediction] = max(final_output);
+accuracy = sum(prediction==label') / length(label);
 
 end
 

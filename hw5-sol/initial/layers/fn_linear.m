@@ -31,6 +31,6 @@ if backprop
 	% TODO: BACKPROP CODE
     
     dv_input = params.W.' * dv_output;
-    grad.W = dv_output * input.';
-    grad.b = sum(dv_output, 2);
+    grad.W = dv_output * input.' ./ batch_size;
+    grad.b = sum(dv_output, 2) ./ batch_size;
 end

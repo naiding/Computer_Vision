@@ -24,17 +24,20 @@ else
     bs = 0.1; 
 end
 
-params = struct('W',[],'b',[]);
+params = struct('W', [], 'b', []);
 switch type
 	case 'linear'
 		% Requires num_in, num_out
 		fn = @fn_linear;		
-		W = weight_init(info.num_out, info.num_in)*ws;
-		b = weight_init(info.num_out, 1)*bs;
-%         r  = sqrt(6) / sqrt(info.num_in + info.num_out);
-%         W = rand(info.num_out, info.num_in) * 2 * r - r;
-%         b = rand(info.num_out, 1);
-		params.W = W;
+% 		W = weight_init(info.num_out, info.num_in)*ws;
+% 		b = weight_init(info.num_out, 1)*bs;
+
+        % He's initialization
+        r  = sqrt(2) / sqrt(info.num_in);
+        W = randn(info.num_out, info.num_in) * r;
+        b = zeros(info.num_out, 1);
+		
+        params.W = W;
 		params.b = b;
 	case 'conv'
 		% Requires filter_size, filter_depth, num_filters
