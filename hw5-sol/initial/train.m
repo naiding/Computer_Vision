@@ -73,9 +73,8 @@ fprintf("Begin training process ... \n");
 
 for i = 1:numIters
     rp = randperm(num_data);
-        
+    
     for j = 1 : batch_size : (num_data - batch_size + 1)
-        
         X_batch = input(:, :, :, rp(j:j+batch_size-1));
         y_batch = label(rp(j:j+batch_size-1));
         
@@ -87,18 +86,24 @@ for i = 1:numIters
         model = update_weights(model, grad, update_params);
     end
     
-    [output, ~] = inference(model, input);
-    [loss_overall, ~] = loss_crossentropy(output, label, [], false);
+%     [output, ~] = inference(model, input);
+%     [loss_overall, ~] = loss_crossentropy(output, label, [], false);
+%     
+%     loss_history = [loss_history; loss_overall];
+%     
+%     [~, acc1] = predict(model, input, label);
+%     [~, acc2] = predict(model, val_input, val_label);
+%     
+%     acc_input = [acc_input; acc1];
+%     acc_val = [acc_val; acc2];
     
-    loss_history = [loss_history; loss_overall];
-    
-    [~, acc1] = predict(model, input, label);
-    [~, acc2] = predict(model, val_input, val_label);
-    
+    [model, ~, acc1, loss_input] = predict(model, input, label);
+    loss_history = [loss_history; loss_input];
+    [model, ~, acc2, ~] = predict(model, val_input, val_label);
     acc_input = [acc_input; acc1];
     acc_val = [acc_val; acc2];
     
-    fprintf(" --- Iter %d ... overall loss %f ... train acc %f ... val acc %f. --- \n", i, loss_overall, acc1, acc2);
+    fprintf(" --- Iter %d ... overall loss %f ... train acc %f ... val acc %f. --- \n", i, loss_input, acc1, acc2);
 
 end
 

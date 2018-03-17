@@ -4,10 +4,10 @@ clear
 %% load data and create a toy data set for testing
 load_MNIST_data;
 
-rng(0);
+% rng(0);
 rp = randperm(size(train_data, 4));
 
-num_train_data = 9000;
+num_train_data = 2000;
 num_val_data = 1000;
 
 val_data = train_data(:, :, :, rp((num_train_data+1):(num_train_data+num_val_data)));
@@ -31,12 +31,12 @@ l = arch_design();
 model = init_model(l, [im_col im_row im_dep], num_output, true);
 
 numIters = 50;
-params.learning_rate = 0.01 ;
+params.learning_rate = 0.008 ;
 params.weight_decay = 0.0005;
 params.batch_size = 100;
 
 [model, loss_history] = train(model, train_data, train_label, val_data, val_label, params, numIters);
-[prediction, accuracy] = predict(model, test_data, test_label);
+[~, prediction, accuracy, ~] = predict(model, test_data, test_label);
 figure;plot(loss_history)
 accuracy
 

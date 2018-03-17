@@ -42,7 +42,7 @@ switch type
 	case 'conv'
 		% Requires filter_size, filter_depth, num_filters
 		fn = @fn_conv;		
-		W = weight_init(info.filter_size, info.filter_size,  info.filter_depth, info.num_filters)*ws;
+		W = weight_init(info.filter_size, info.filter_size, info.filter_depth, info.num_filters)*ws;
 		b = weight_init(info.num_filters, 1)*bs;
 		params.W = W;
 		params.b = b;
@@ -57,6 +57,10 @@ switch type
 		fn = @fn_flatten;
 	case 'relu'
 		fn = @fn_relu;
+    case 'leaky_relu'
+		fn = @fn_leaky_relu;
+    case 'dropout'
+        fn = @fn_dropout;
 end
 
 layer = struct('fwd_fn', fn, 'type', type, 'params', params, 'hyper_params', info);
