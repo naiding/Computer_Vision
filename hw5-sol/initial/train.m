@@ -67,8 +67,6 @@ loss_history = [];
 acc_input = [];
 acc_val = [];
 
-
-
 fprintf("Begin training process ... \n");
 
 for i = 1:numIters
@@ -86,17 +84,6 @@ for i = 1:numIters
         model = update_weights(model, grad, update_params);
     end
     
-%     [output, ~] = inference(model, input);
-%     [loss_overall, ~] = loss_crossentropy(output, label, [], false);
-%     
-%     loss_history = [loss_history; loss_overall];
-%     
-%     [~, acc1] = predict(model, input, label);
-%     [~, acc2] = predict(model, val_input, val_label);
-%     
-%     acc_input = [acc_input; acc1];
-%     acc_val = [acc_val; acc2];
-    
     [model, ~, acc1, loss_input] = predict(model, input, label);
     loss_history = [loss_history; loss_input];
     [model, ~, acc2, ~] = predict(model, val_input, val_label);
@@ -106,6 +93,8 @@ for i = 1:numIters
     fprintf(" --- Iter %d ... overall loss %f ... train acc %f ... val acc %f. --- \n", i, loss_input, acc1, acc2);
 
 end
+
+save(save_file,'model');
 
 figure;
 plot(acc_input), hold on

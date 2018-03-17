@@ -61,6 +61,8 @@ switch type
 		fn = @fn_leaky_relu;
     case 'dropout'
         fn = @fn_dropout;
+    case 'bn'
+        fn = @fn_bn;
 end
 
 layer = struct('fwd_fn', fn, 'type', type, 'params', params, 'hyper_params', info);

@@ -14,7 +14,7 @@ if strcmp(task, 'train')
         output = input .* dropoutMask;
     else
         output = input .* dropoutMask;
-        dv_input = dv_output ./ p;
+        dv_input = dv_output / p;
 		dv_input(output == 0) = 0;
     end
 elseif strcmp(task, 'test')

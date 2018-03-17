@@ -7,7 +7,7 @@ load_MNIST_data;
 % rng(0);
 rp = randperm(size(train_data, 4));
 
-num_train_data = 2000;
+num_train_data = 19000;
 num_val_data = 1000;
 
 val_data = train_data(:, :, :, rp((num_train_data+1):(num_train_data+num_val_data)));
@@ -30,10 +30,11 @@ num_output = 10;
 l = arch_design();
 model = init_model(l, [im_col im_row im_dep], num_output, true);
 
-numIters = 50;
-params.learning_rate = 0.008 ;
+numIters = 120;
+params.learning_rate = 0.01;
 params.weight_decay = 0.0005;
 params.batch_size = 100;
+params.save_file = 'model_autosave.mat';
 
 [model, loss_history] = train(model, train_data, train_label, val_data, val_label, params, numIters);
 [~, prediction, accuracy, ~] = predict(model, test_data, test_label);
