@@ -7,7 +7,7 @@ for i = 1:numel(model.layers)
     end
 end
 
-[final_output, ~] = inference(model, data);
+[model, final_output, ~] = inference(model, data);
 [loss, ~] = loss_crossentropy(final_output, label, [], false);
 
 [~, prediction] = max(final_output);

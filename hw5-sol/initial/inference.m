@@ -1,4 +1,4 @@
-function [output, activations] = inference(model, input)
+function [model, output, activations] = inference(model, input)
 % Do forward propagation through the network to get the activation
 % at each layer, and the final output
 
@@ -10,7 +10,7 @@ activations = cell(num_layers,1);
 for i = 1:num_layers
     layer = model.layers(i);
 %     tic;
-    [activations{i}, ~, ~] = layer.fwd_fn(input, layer.params, layer.hyper_params, false, []);
+    [activations{i}, ~, ~, model.layers(i).params] = layer.fwd_fn(input, layer.params, layer.hyper_params, false, []);
 %     fprintf("forward %s used time %f. \n", layer.type, toc);
     input = activations{i};
 %     fprintf(" ... %s layer output ... \n", layer.type);

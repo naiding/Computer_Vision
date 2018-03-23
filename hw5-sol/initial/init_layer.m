@@ -28,41 +28,48 @@ params = struct('W', [], 'b', []);
 switch type
 	case 'linear'
 		% Requires num_in, num_out
-		fn = @fn_linear;		
+		fn = @func_linear;		
 % 		W = weight_init(info.num_out, info.num_in)*ws;
 % 		b = weight_init(info.num_out, 1)*bs;
 
         % He's initialization
         r  = sqrt(2) / sqrt(info.num_in);
         W = randn(info.num_out, info.num_in) * r;
-        b = zeros(info.num_out, 1);
+        b = 0.05 * ones(info.num_out, 1);
 		
         params.W = W;
 		params.b = b;
 	case 'conv'
 		% Requires filter_size, filter_depth, num_filters
-		fn = @fn_conv;		
-		W = weight_init(info.filter_size, info.filter_size, info.filter_depth, info.num_filters)*ws;
-		b = weight_init(info.num_filters, 1)*bs;
+		fn = @func_conv;
+        
+% 		W = weight_init(info.filter_size, info.filter_size, info.filter_depth, info.num_filters)*ws;
+% 		b = weight_init(info.num_filters, 1)*bs;
+        
+        r  = sqrt(2) / sqrt(info.filter_size * info.filter_size * info.filter_depth);
+        W = randn(info.filter_size, info.filter_size, info.filter_depth, info.num_filters) * r;
+        b = 0.05 * ones(info.num_filters, 1);
+        
 		params.W = W;
 		params.b = b;
+        
 	case 'pool'
 		% Requires filter_size and optionally stride (default stride = 1)
-		fn = @fn_pool;		
+		fn = @func_pool;		
 	case 'softmax'
-		fn = @fn_softmax;
+		fn = @func_softmax;
 	case 'flatten'
 		% Requires the number of dimensions of the output of the previous layer.
 		% The parameter should be defined by info.num_dims
-		fn = @fn_flatten;
+		fn = @func_flatten;
 	case 'relu'
-		fn = @fn_relu;
+		fn = @func_relu;
     case 'leaky_relu'
-		fn = @fn_leaky_relu;
+		fn = @func_leaky_relu;
     case 'dropout'
-        fn = @fn_dropout;
+        fn = @func_dropout;
     case 'bn'
-        fn = @fn_bn;
+        fn = @func_bn;
 end
 
 layer = struct('fwd_fn', fn, 'type', type, 'params', params, 'hyper_params', info);
