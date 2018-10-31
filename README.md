@@ -1,4 +1,4 @@
-### Codes for Computer Vision EECS 442 (Winter 2018)
+### Codes for some basic Computer Vision Task
 
 #### 1. Color image
 - Part1: Coloring Prokudin-Gorskii images
